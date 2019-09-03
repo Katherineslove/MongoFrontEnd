@@ -120,7 +120,8 @@ $('#addProductButton').click(function(){
                 type: 'POST',
                 data: {
                     name: productName,
-                    price: productPrice
+                    price: productPrice,
+                    userId: sessionStorage['userID']
                 },
                 success:function(result){
                     $('#productName').val(null);
