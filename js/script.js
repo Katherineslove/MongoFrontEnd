@@ -3,6 +3,23 @@ let serverPort;
 let url;
 let editing = false;
 
+// The modal appears onload
+$(document).ready(function(){
+
+    if(sessionStorage['userName']){
+        console.log('you are logged in ');
+        $('#loginBtn').hide();
+        $('#logoutBtn').removeClass('d-none');
+        $('#addProductSection').removeClass('d-none');
+
+    } else {
+        // you aren't logged in
+        console.log('please sign in');
+    }
+
+    console.log(sessionStorage);
+})
+
 // Get the JSON File
 $.ajax({
   url: 'config.json',
@@ -56,6 +73,12 @@ getProductsData = () => {
 //Add or Edit a product
 $('#addProductButton').click(function(){
     event.preventDefault();
+
+    if(!sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     let productName = $('#productName').val();
     let productPrice = $('#productPrice').val();
     if(productName.length === 0){
@@ -125,6 +148,12 @@ $('#addProductButton').click(function(){
 // Edit button to fill the form with exisiting product
 $('#productList').on('click', '.editBtn', function() {
     event.preventDefault();
+
+    if(!sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     const id = $(this).parent().parent().data('id');
     $.ajax({
         url: `${url}/product/${id}`,
@@ -148,6 +177,12 @@ $('#productList').on('click', '.editBtn', function() {
 // Remove a product
 $('#productList').on('click', '.removeBtn', function(){
     event.preventDefault();
+
+    if(!sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     const id = $(this).parent().parent().data('id');
     const li = $(this).parent().parent();
     $.ajax({
@@ -175,6 +210,7 @@ $('#loginTabBtn').click(function(){
 // Register button
 $('#registerTabBtn').click(function(){
     event.preventDefault();
+
     $('.nav-link').removeClass('active');
     $(this).addClass('active');
     $('#loginForm').hide();
@@ -185,6 +221,12 @@ $('#registerTabBtn').click(function(){
 // Register Form
 $('#registerForm').submit(function(){
     event.preventDefault();
+
+    if(sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     // Get all the values from the input fields
     const username = $('#rUsername').val();
     const email = $('#rEmail').val();
@@ -229,6 +271,12 @@ $('#registerForm').submit(function(){
 // Login Form
 $('#loginForm').submit(function(){
     event.preventDefault();
+
+    if(sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     // Get the two input fields
     const username = $('#lUsername').val();
     const password = $('#lPassword').val();
@@ -288,25 +336,14 @@ $('#loginForm').submit(function(){
 // Log out button
 $('#logoutBtn').click(function(){
     sessionStorage.clear();
+
+    if(!sessionStorage['userID']){
+      alert('401, permission denied');
+      return;
+    }
+
     getProductsData();
     $('#loginBtn').show();
     $('#logoutBtn').addClass('d-none');
     $('#addProductSection').addClass('d-none');
 });
-
-// The modal appears onload
-$(document).ready(function(){
-
-    if(sessionStorage['userName']){
-        console.log('you are logged in ');
-        $('#loginBtn').hide();
-        $('#logoutBtn').removeClass('d-none');
-        $('#addProductSection').removeClass('d-none');
-
-    } else {
-        // you aren't logged in
-        console.log('please sign in');
-    }
-
-    console.log(sessionStorage);
-})
