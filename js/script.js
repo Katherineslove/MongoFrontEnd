@@ -45,7 +45,6 @@ getProductsData = () => {
         success:function(data){
             $('#productList').empty();
             for (var i = 0; i < data.length; i++) {
-                // Create a variable called product which will hold our template string for our product
                 let product = `
                     <li
                         class="list-group-item d-flex justify-content-between align-items-center productItem"
@@ -62,6 +61,7 @@ getProductsData = () => {
                             }
                         }
                 product += `</li>`;
+
                 $('#productList').append(product);
             }
         },
@@ -160,11 +160,12 @@ $('#productList').on('click', '.editBtn', function() {
     }
 
     const id = $(this).parent().parent().data('id');
+
     $.ajax({
         url: `${url}/product/${id}`,
         type: 'POST',
         data: {
-            userId: sessionStorage['userId']
+            userId: sessionStorage['userID']
         },
         dataType: 'json',
         success:function(product){
