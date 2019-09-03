@@ -45,21 +45,23 @@ getProductsData = () => {
         success:function(data){
             $('#productList').empty();
             for (var i = 0; i < data.length; i++) {
+                // Create a variable called product which will hold our template string for our product
                 let product = `
                     <li
                         class="list-group-item d-flex justify-content-between align-items-center productItem"
                         data-id="${data[i]._id}"
                     >
                         <span class="productName">$${data[i].price} | ${data[i].name}</span>`;
-                        if(sessionStorage['userName']){
-                            product += `<div>
-                                            <button class="btn btn-info editBtn">Edit</button>
-                                            <button class="btn btn-danger removeBtn">Remove</button>
-                                        </div>`;
-                        }
-                    product += `</li>
-                `;
 
+                        if(sessionStorage['userName']){
+                            if(sessionStorage['userID'] === data[i].user_id){
+                                product += `<div>
+                                                <button class="btn btn-info editBtn">Edit</button>
+                                                <button class="btn btn-danger removeBtn">Remove</button>
+                                            </div>`;
+                            }
+                        }
+                product += `</li>`;
                 $('#productList').append(product);
             }
         },
@@ -93,9 +95,11 @@ $('#addProductButton').click(function(){
                 type: 'PATCH',
                 data: {
                     name: productName,
-                    price: productPrice
+                    price: productPrice,
+                    userId: sessionStorage['userID']
                 },
                 success:function(result){
+                  console.log(result);
                     $('#productName').val(null);
                     $('#productPrice').val(null);
                     $('#productID').val(null);
@@ -338,7 +342,7 @@ $('#loginForm').submit(function(){
 $('#logoutBtn').click(function(){
     sessionStorage.clear();
 
-    if(!sessionStorage['userID']){
+    if(sessionStorage['userID']){
       alert('401, permission denied');
       return;
     }
