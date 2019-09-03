@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>MongoDB Front End</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Header including navigation and contact form -->
+    <header>
+        <!-- Collapsable section for my contact form -->
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 py-4 text-white">
+                        <h4 class="">Contact Us</h4>
+                        <form class="" action="index.html" method="post">
+                            <div class="form-row">
+                                <div class="col-12 col-sm-6">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" value="" class="form-control">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" value="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea name="message" rows="4" cols="80" class="form-control"></textarea>
+
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="" value="Send Enquiry" class="btn btn-light">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Navigation -->
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container d-flex justify-content-between">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <strong>Product Library</strong>
+                </a>
+                <!-- Hamburger menu -->
+                <!-- This will toggle the collapsable contact form from above -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Login & Register Button -->
+                <button id="loginBtn" type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#authForm">
+                    Login / Register
+                </button>
+                <button id="logoutBtn" type="button" class="btn btn-outline-light d-none">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container for the page -->
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Product Library</h1>
+            </div>
+        </div>
+        <!-- Add Product Button -->
+        <div id="addProductSection" class="row d-none">
+            <div class="col-12">
+                <h3 id="heading">Add New Product</h3>
+            </div>
+            <div class="col-12">
+                <form id="addProduct">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" name="productName" class="form-control" value="" id="productName">
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Product Price</label>
+                        <input type="number" name="productPrice" class="form-control" value="" id="productPrice">
+                    </div>
+                    <input type="hidden" id="productID">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" name="button" id="addProductButton">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- List of all Products -->
+        <div class="row">
+            <div class="col">
+                <h3>All Products</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- Through our JS we will append all of our products into this ul -->
+                <ul id="productList" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for our login and register forms -->
+    <div class="modal fade" id="authForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- tabs to be able to switch between our login and register form -->
+                    <ul class="nav nav-tabs nav-fill w-100">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="loginTabBtn">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="registerTabBtn">Register</a>
+                        </li>
+                    </ul>
+                    <!-- Close button for our modal, We can also click out of our modal to close it as well -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <form id="loginForm" autocomplete="false">
+                        <div class="form-group">
+                            <label for="lUsername">Username</label>
+                            <input type="text" name="lUsername" id="lUsername" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="lPassword">Password</label>
+                            <input type="password" name="lPassword" id="lPassword" class="form-control" autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="button" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                    </form>
+                    <!-- Register Form  -->
+                    <form id="registerForm" autocomplete="false" class="d-none">
+                        <div class="form-group">
+                            <label for="rUsername">Username</label>
+                            <input type="text" name="rUsername" id="rUsername" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="rEmail">Email</label>
+                            <input type="email" name="rEmail" id="rEmail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="rPassword">Password</label>
+                            <input type="password" name="rPassword" id="rPassword" class="form-control" autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label for="rConfirmPassword">Confirm Password</label>
+                            <input type="password" name="rConfirmPassword" id="rConfirmPassword" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="button" class="btn btn-info btn-block">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js" charset="utf-8"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="js/script.js" charset="utf-8"></script>
+</body>
+</html>
