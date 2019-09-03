@@ -162,9 +162,13 @@ $('#productList').on('click', '.editBtn', function() {
     const id = $(this).parent().parent().data('id');
     $.ajax({
         url: `${url}/product/${id}`,
-        type: 'get',
+        type: 'POST',
+        data: {
+            userId: sessionStorage['userId']
+        },
         dataType: 'json',
         success:function(product){
+          console.log(product);
             $('#productName').val(product['name']);
             $('#productPrice').val(product['price']);
             $('#productID').val(product['_id']);
